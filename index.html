@@ -356,6 +356,13 @@
             padding-left: 15px;
             border-left: 4px solid var(--primary-red);
             font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .rule-category h3 i {
+            font-size: 1.5rem;
         }
 
         .rule-list {
@@ -419,6 +426,10 @@
             text-align: center;
             position: relative;
             padding-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
         }
 
         .info-title::after {
@@ -480,7 +491,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCIgdmlld0JveD0iMCAwIDYwIDYwIj48ZyBmaWxsPSJub25lIiBzdHJva2U9IiMzMzMiIHN0cm9rZS13aWR0aD0iMSI+PHBhdGggZD0iTTAgMGg2MHY2MEgweiIvPjxwYXRoIGQ9Ik02MCAwTDAgNjAiLz48L2c+PC9zdmc+');
+            background: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2MCIgaGViZ2h0PSI2MCIgdmlld0JveD0iMCAwIDYwIDYwIj48ZyBmaWxsPSJub25lIiBzdHJva2U9IiMzMzMiIHN0cm9rZS13aWR0aD0iMSI+PHBhdGggZD0iTTAgMGg2MHY2MEgweiIvPjxwYXRoIGQ9Ik02MCAwTDAgNjAiLz48L2c+PC9zdmc+');
             opacity: 0.1;
         }
 
@@ -580,6 +591,111 @@
         .contact-item i {
             color: var(--primary-red);
             font-size: 1.2rem;
+        }
+
+        /* Copyright Info Modal */
+        .copyright-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(5px);
+        }
+
+        .copyright-content {
+            background: linear-gradient(145deg, var(--secondary-black), var(--accent-gray));
+            width: 90%;
+            max-width: 800px;
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.7);
+            position: relative;
+            border: 2px solid var(--primary-red);
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .copyright-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .copyright-header h2 {
+            font-size: 2.2rem;
+            color: var(--primary-red);
+            margin-bottom: 10px;
+        }
+
+        .copyright-header p {
+            color: var(--text-light);
+            font-size: 1.1rem;
+        }
+
+        .copyright-info {
+            margin-bottom: 30px;
+        }
+
+        .copyright-info h3 {
+            color: var(--primary-red);
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid var(--primary-red);
+        }
+
+        .copyright-info p {
+            color: var(--text-light);
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .copyright-info ul {
+            list-style-type: none;
+            padding-left: 20px;
+        }
+
+        .copyright-info li {
+            color: var(--text-light);
+            margin-bottom: 10px;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .copyright-info li::before {
+            content: '•';
+            color: var(--primary-red);
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+            font-size: 1.2rem;
+        }
+
+        .close-copyright {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .close-btn {
+            background: linear-gradient(to right, var(--primary-red), var(--secondary-red));
+            color: white;
+            padding: 12px 30px;
+            border-radius: 30px;
+            border: none;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+
+        .close-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(255, 0, 0, 0.4);
         }
 
         /* Application Form */
@@ -750,6 +866,12 @@
         .copyright {
             color: #777;
             font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .copyright:hover {
+            color: var(--primary-red);
         }
 
         /* Animations */
@@ -851,6 +973,14 @@
             .info-content {
                 grid-template-columns: 1fr;
             }
+
+            .copyright-content {
+                padding: 25px;
+            }
+
+            .copyright-header h2 {
+                font-size: 1.8rem;
+            }
         }
 
         @media (max-width: 480px) {
@@ -891,6 +1021,49 @@
                 width: 100%;
                 justify-content: center;
             }
+
+            .copyright-content {
+                padding: 20px;
+            }
+
+            .copyright-header h2 {
+                font-size: 1.5rem;
+            }
+.legal {
+  background: #141414;
+  padding: 25px;
+  border-radius: 12px;
+  margin: 30px;
+  border: 1px solid #2a2a2a;
+  box-shadow: 0 0 20px rgba(255,56,56,0.3);
+}
+.legal h2 {
+  color: #ff4747;
+  margin-bottom: 10px;
+}
+.legal h3 {
+  color: #ffaa33;
+}
+.legal h4 {
+  margin-top: 18px;
+  color: #33c3ff;
+}
+.case-box {
+  background: #1f1f1f;
+  border-left: 5px solid #ff4747;
+  padding: 10px 15px;
+  margin: 15px 0;
+  border-radius: 6px;
+  font-size: 15px;
+}
+.warning {
+  color: #ff5e5e;
+  font-weight: bold;
+}
+.legal ul {
+  margin: 8px 0 15px 20px;
+  line-height: 1.6;
+}
         }
     </style>
 </head>
@@ -944,7 +1117,7 @@
             <h2 class="section-title">RULES & REGULATIONS</h2>
             
             <div class="rule-category">
-                <h3>General Rules</h3>
+                <h3><i class="fas fa-exclamation-circle"></i> General Rules</h3>
                 <ul class="rule-list">
                     <li>Disrespecting CO or BOSS results in immediate kick</li>
                     <li>Toxic behavior with members results in kick</li>
@@ -957,7 +1130,7 @@
             </div>
             
             <div class="rule-category">
-                <h3>Operational Guidelines</h3>
+                <h3><i class="fas fa-clipboard-list"></i> Operational Guidelines</h3>
                 <ul class="rule-list">
                     <li>Non-provocation policy towards other gangs and citizens</li>
                     <li>Rank progression based on performance and city activity</li>
@@ -977,7 +1150,7 @@
             
             <!-- Leaders Box -->
             <div class="info-box">
-                <h3 class="info-title">GANG LEADERS</h3>
+                <h3 class="info-title"><i class="fas fa-crown"></i> GANG LEADERS</h3>
                 <div class="info-content">
                     <div class="info-item">
                         <div class="member-name">Vynz_Abrahamm</div>
@@ -992,7 +1165,7 @@
             
             <!-- Co-Leaders Box -->
             <div class="info-box">
-                <h3 class="info-title">GANG CO-LEADERS</h3>
+                <h3 class="info-title"><i class="fas fa-star"></i> GANG CO-LEADERS</h3>
                 <div class="info-content">
                     <div class="info-item">
                         <div class="member-name">Lender_Dire</div>
@@ -1011,33 +1184,9 @@
             
             <!-- Members Box -->
             <div class="info-box">
-                <h3 class="info-title">GANG MEMBERS</h3>
-                <div class="info-content">                	
+                <h3 class="info-title"><i class="fas fa-users"></i> GANG MEMBERS</h3>
+                <div class="info-content" id="members-container">
                     <!-- Members will be added here dynamically -->
-  <div class="member-name">Vynz_Abraham</div>
-<div class="member-name">Eren_Yeager</div>
-<div class="member-name">Rizu_Cazz</div>
-<div class="member-name">Rj_Zam</div>
-<div class="member-name">Ricardo_Miles</div>
-<div class="member-name">Kakashi_Katake</div>
-<div class="member-name">Jodx_Vincenzo</div>
-<div class="member-name">Zamurai_Zy</div>
-<div class="member-name">Alexander_Bravo</div>
-<div class="member-name">Maya_Kannan</div>
-<div class="member-name">Bruce_Raj</div>
-<div class="member-name">Mr_Trivia</div>
-<div class="member-name">Ferdin_Fredy</div>
-<div class="member-name">Dextra_Vyko</div>
-<div class="member-name">Lender_Dire</div>
-<div class="member-name">Dean_Ambrose</div>
-<div class="member-name">Tdr_Sathan</div>
-<div class="member-name">Razz_Popz</div>
-<div class="member-name">Senzio_Stark</div>
-<div class="member-name">Kevin_Carlo</div>
-<div class="member-name">Kurup_Dq</div>
-<div class="member-name">Babu_Don</div>
-<div class="member-name">Achu_Uchiha</div>
-<div class="member-name">Dingan_Rx</div>                  	
                 </div>
             </div>
         </div>
@@ -1052,6 +1201,42 @@
             </a>
         </div>
     </section>
+    
+    
+<!-- Legal Section -->
+<section class="legal">
+  <h2>⚖️ Legal & Copyright Information</h2>
+  <h3>GLACT-X Gang Website - Terms of Use & Legal Info</h3>
+
+  <div class="case-box">
+    <strong>Case Number:</strong> # <br>
+    <span class="warning">⚠️ Reselling or redistributing this website code under any other brand name is strictly prohibited.</span>
+  </div>
+
+  <h4>Intellectual Property Rights</h4>
+  <p>All website content, including text, graphics, logos, images, and software, belongs to <strong>GLACT-X Gang</strong> and is protected by international copyright laws.</p>
+
+  <h4>Allowed Uses ✅</h4>
+  <ul>
+    <li>View, download, and print content for personal, non-commercial use.</li>
+    <li>Keep all copyright and proprietary notices.</li>
+    <li>No modifications without permission.</li>
+  </ul>
+
+  <h4>Restrictions ❌</h4>
+  <ul>
+    <li>No republishing without permission.</li>
+    <li>No selling, renting, or sub-licensing.</li>
+    <li>No reproducing for commercial use.</li>
+    <li>No redistribution without approval.</li>
+  </ul>
+
+  <h4>Trademarks ™</h4>
+  <p><strong>GLACT-X, THUNDER CRIMINALS [TDR], AKATSUKI [ATX]</strong>, and related logos are trademarks of GLACT-X Gang and cannot be used without prior written consent.</p>
+
+  <h4>Disclaimer</h4>
+  <p>We ensure accuracy but do not guarantee completeness. Content may change anytime without prior notice.</p>
+</section>
 
     <!-- Developer Section -->
     <section class="developer-section">
@@ -1070,6 +1255,48 @@
             </div>
         </div>
     </section>
+
+    <!-- Copyright Modal -->
+    <div class="copyright-modal" id="copyrightModal">
+        <div class="copyright-content">
+            <div class="copyright-header">
+                <h2><i class="fas fa-copyright"></i> Copyright Information</h2>
+                <p>GLACT-X Gang Website - Terms of Use & Legal Information</p>
+            </div>
+            
+            <div class="copyright-info">
+                <h3>Intellectual Property Rights</h3>
+                <p>All content on this website, including but not limited to text, graphics, logos, images, and software, is the property of GLACT-X Gang or its content suppliers and is protected by international copyright laws.</p>
+                
+                <h3>Allowed Uses</h3>
+                <p>You may view, download, and print content from this website for your personal, non-commercial use only, provided that:</p>
+                <ul>
+                    <li>You do not modify the content</li>
+                    <li>You retain all copyright and proprietary notices</li>
+                    <li>You do not use the content in a way that suggests association with GLACT-X without explicit permission</li>
+                </ul>
+                
+                <h3>Restrictions</h3>
+                <p>You may not:</p>
+                <ul>
+                    <li>Republish material from this website without permission</li>
+                    <li>Sell, rent, or sub-license material from the website</li>
+                    <li>Reproduce, duplicate, or copy material for commercial purposes</li>
+                    <li>Redistribute content from this website without permission</li>
+                </ul>
+                
+                <h3>Trademarks</h3>
+                <p>GLACT-X, THUNDER CRIMINALS [TDR], AKATSUKI [ATX], and all related logos are trademarks of GLACT-X Gang and may not be used without prior written permission.</p>
+                
+                <h3>Website Content</h3>
+                <p>We strive to ensure that the information on this website is correct, but we do not guarantee its completeness or accuracy. We may make changes to the content at any time without notice.</p>
+            </div>
+            
+            <div class="close-copyright">
+                <button class="close-btn" id="closeCopyright">Close</button>
+            </div>
+        </div>
+    </div>
 
     <div class="apply-form-container" id="applyFormContainer">
         <div class="apply-form">
@@ -1142,7 +1369,7 @@
     <footer>
         <div class="container footer-content">
             <div class="footer-logo">GLACT-X</div>
-            <div class="copyright">© 2025 GLACT-X Gang. All rights reserved.</div>
+            <div class="copyright" id="copyrightBtn">© 2025 GLACT-X Gang. All rights reserved. (Click for more info)</div>
         </div>
     </footer>
 
@@ -1153,24 +1380,24 @@
             "Kakashi_Katake", "Jodx_Vincenzo", "Zamurai_Zy", "Alexander_Bravo", "Maya_Kannan",
             "Bruce_Raj", "Mr_Trivia", "Ferdin_Fredy", "Dextra_Vyko", "Lender_Dire",
             "Dean_Ambrose", "Tdr_Sathan", "Razz_Popz", "Senzio_Stark", "Kevin_Carlo",
-            "Kurup_Dq", "Babu_Don", "Achu_Uchiha", "Dingan_Rx"
+            "Kurup_Dq", "Babu_Don", "Achu_Uchiha", "Dingan_Rx", "Tom_Alexander", "Filix_Raj", " Tom_Zenitzu"
         ];
 
         // Function to generate member cards
         function generateMemberCards() {
-            const membersGrid = document.querySelector('.info-content:last-child');
+            const membersGrid = document.getElementById('members-container');
             
             members.forEach((member) => {
                 const item = document.createElement('div');
-                item.className = 'info-item';
+                //item.className = 'info-item';
                 
                 item.innerHTML = `
                     <div class="member-name">${member}</div>
-                    <div class="member-role">MEMBER</div>
+                    <div class="member-role"></div>
                 `;
                 
                 membersGrid.appendChild(item);
-           // });
+            });
         }
 
         // Header scroll behavior
@@ -1214,6 +1441,28 @@
             const step3 = document.getElementById('step3');
             const successMessage = document.getElementById('successMessage');
             const phoneInput = document.getElementById('phone');
+            
+            // Copyright modal functionality
+            const copyrightBtn = document.getElementById('copyrightBtn');
+            const copyrightModal = document.getElementById('copyrightModal');
+            const closeCopyright = document.getElementById('closeCopyright');
+            
+            // Open copyright modal
+            copyrightBtn.addEventListener('click', function() {
+                copyrightModal.style.display = 'flex';
+            });
+            
+            // Close copyright modal
+            closeCopyright.addEventListener('click', function() {
+                copyrightModal.style.display = 'none';
+            });
+            
+            // Close copyright modal if clicked outside
+            copyrightModal.addEventListener('click', function(e) {
+                if (e.target === copyrightModal) {
+                    copyrightModal.style.display = 'none';
+                }
+            });
             
             // Open application form from both buttons
             applyBtn.addEventListener('click', function(e) {
@@ -1392,4 +1641,4 @@
         });
     </script>
 </body>
-</html>
+    </html>
