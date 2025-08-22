@@ -1,0 +1,1395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GLACT-X | San Andreas Multiplayer Gang</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Rajdhani', sans-serif;
+        }
+
+        :root {
+            --primary-red: #ff0000;
+            --secondary-red: #cc0000;
+            --primary-black: #0a0a0a;
+            --secondary-black: #1a1a2e;
+            --accent-gray: #2a2a2a;
+            --text-white: #ffffff;
+            --text-light: #f1f1f1;
+        }
+
+        body {
+            background-color: var(--primary-black);
+            color: var(--text-white);
+            overflow-x: hidden;
+        }
+
+        /* Animated background */
+        .animated-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .bg-circle {
+            position: absolute;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255, 0, 0, 0.1) 0%, transparent 70%);
+            animation: float 15s infinite linear;
+        }
+
+        .bg-circle:nth-child(1) {
+            width: 300px;
+            height: 300px;
+            top: 10%;
+            left: 10%;
+            animation-delay: 0s;
+            animation-duration: 25s;
+        }
+
+        .bg-circle:nth-child(2) {
+            width: 200px;
+            height: 200px;
+            top: 60%;
+            left: 80%;
+            animation-delay: 2s;
+            animation-duration: 20s;
+        }
+
+        .bg-circle:nth-child(3) {
+            width: 400px;
+            height: 400px;
+            top: 70%;
+            left: 20%;
+            animation-delay: 4s;
+            animation-duration: 30s;
+        }
+
+        .bg-circle:nth-child(4) {
+            width: 250px;
+            height: 250px;
+            top: 20%;
+            left: 70%;
+            animation-delay: 6s;
+            animation-duration: 22s;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translate(0, 0) rotate(0deg);
+            }
+            25% {
+                transform: translate(20px, 15px) rotate(5deg);
+            }
+            50% {
+                transform: translate(0, 30px) rotate(0deg);
+            }
+            75% {
+                transform: translate(-20px, 15px) rotate(-5deg);
+            }
+            100% {
+                transform: translate(0, 0) rotate(0deg);
+            }
+        }
+
+        /* Header Styles */
+        header {
+            background: linear-gradient(to bottom, var(--primary-black), rgba(10, 10, 10, 0.9));
+            padding: 15px 0;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.7);
+            transition: transform 0.4s ease;
+            transform: translateY(0);
+        }
+
+        header.hidden {
+            transform: translateY(-100%);
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo img {
+            height: 50px;
+            filter: drop-shadow(0 0 8px var(--primary-red));
+        }
+
+        .logo-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .gang-name {
+            font-size: 28px;
+            font-weight: 800;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            letter-spacing: 2px;
+            color: var(--text-white);
+            background: linear-gradient(to right, var(--text-white), var(--primary-red));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .gang-tag {
+            font-size: 14px;
+            letter-spacing: 1px;
+            color: var(--primary-red);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 25px;
+        }
+
+        .nav-links a {
+            color: var(--text-light);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            padding: 8px 12px;
+            border-radius: 4px;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: var(--primary-red);
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+            animation: pulse 2s infinite;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-red);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .apply-btn {
+            background: linear-gradient(to right, var(--primary-red), var(--secondary-red));
+            color: var(--text-white);
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-weight: bold;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255, 0, 0, 0.3);
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            animation: pulse 2s infinite;
+        }
+
+        .apply-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(255, 0, 0, 0.4);
+        }
+
+        /* Floating buttons */
+        .floating-buttons {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            z-index: 999;
+        }
+
+        .floating-btn {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+            text-decoration: none;
+            animation: pulse 2s infinite;
+        }
+
+        .discord-btn {
+            background: #5865F2;
+        }
+
+        .apply-float-btn {
+            background: linear-gradient(to right, var(--primary-red), var(--secondary-red));
+        }
+
+        .floating-btn:hover {
+            transform: translateY(-5px) scale(1.1);
+        }
+
+        /* Hero Section - Made smaller on mobile */
+        .hero {
+            text-align: center;
+            padding: 160px 0 100px;
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), 
+                        url('https://images.unsplash.com/photo-1531315630201-bb15abeb1653?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-position: center;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, transparent 30%, var(--primary-black) 90%);
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.7);
+            color: var(--text-white);
+            font-weight: 800;
+            letter-spacing: 2px;
+            animation: fadeInDown 1s ease;
+        }
+
+        .hero h1 span {
+            color: var(--primary-red);
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto 30px;
+            color: var(--text-light);
+            line-height: 1.6;
+            animation: fadeInUp 1s ease;
+        }
+
+        /* Section Titles */
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin: 70px 0 40px;
+            color: var(--text-white);
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            position: relative;
+            padding-bottom: 15px;
+            font-weight: 700;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: var(--primary-red);
+            border-radius: 2px;
+        }
+
+        /* Rules Section */
+        .rules-section {
+            padding: 60px 0;
+            background-color: rgba(0, 0, 0, 0.4);
+            border-top: 1px solid var(--accent-gray);
+            border-bottom: 1px solid var(--accent-gray);
+        }
+
+        .rules-container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .rule-category {
+            margin-bottom: 40px;
+        }
+
+        .rule-category h3 {
+            color: var(--primary-red);
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            padding-left: 15px;
+            border-left: 4px solid var(--primary-red);
+            font-weight: 700;
+        }
+
+        .rule-list {
+            list-style-type: none;
+        }
+
+        .rule-list li {
+            padding: 15px;
+            margin-bottom: 12px;
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .rule-list li:hover {
+            background-color: rgba(255, 0, 0, 0.1);
+            transform: translateX(5px);
+        }
+
+        .rule-list li::before {
+            content: '•';
+            color: var(--primary-red);
+            font-weight: bold;
+            display: inline-block;
+            width: 25px;
+            font-size: 1.5rem;
+        }
+
+        /* Gang Info Section */
+        .gang-info-section {
+            padding: 60px 0;
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+
+        .gang-info-container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .info-box {
+            background: linear-gradient(145deg, var(--secondary-black), var(--accent-gray));
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 40px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            border-left: 5px solid var(--primary-red);
+            transition: all 0.3s ease;
+        }
+
+        .info-box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+        }
+
+        .info-title {
+            font-size: 2rem;
+            margin-bottom: 25px;
+            color: var(--primary-red);
+            text-align: center;
+            position: relative;
+            padding-bottom: 15px;
+        }
+
+        .info-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background: var(--primary-red);
+        }
+
+        .info-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .info-item {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 0, 0, 0.1);
+        }
+
+        .info-item:hover {
+            background: rgba(255, 0, 0, 0.1);
+            transform: translateY(-3px);
+        }
+
+        .member-name {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--text-white);
+        }
+
+        .member-role {
+            color: var(--primary-red);
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        /* Discord Section */
+        .discord-section {
+            text-align: center;
+            padding: 80px 0;
+            background: linear-gradient(to right, var(--secondary-black), var(--primary-black));
+            position: relative;
+        }
+
+        .discord-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCIgdmlld0JveD0iMCAwIDYwIDYwIj48ZyBmaWxsPSJub25lIiBzdHJva2U9IiMzMzMiIHN0cm9rZS13aWR0aD0iMSI+PHBhdGggZD0iTTAgMGg2MHY2MEgweiIvPjxwYXRoIGQ9Ik02MCAwTDAgNjAiLz48L2c+PC9zdmc+');
+            opacity: 0.1;
+        }
+
+        .discord-btn-large {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            background-color: #5865F2;
+            color: white;
+            padding: 16px 35px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+            margin-top: 25px;
+            box-shadow: 0 5px 15px rgba(88, 101, 242, 0.3);
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            animation: pulse 2s infinite;
+        }
+
+        .discord-btn-large::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to right, #5865F2, #4752c4);
+            z-index: -1;
+            transition: transform 0.3s ease;
+            transform: scaleX(0);
+            transform-origin: right;
+        }
+
+        .discord-btn-large:hover::before {
+            transform: scaleX(1);
+            transform-origin: left;
+        }
+
+        .discord-btn-large:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(88, 101, 242, 0.4);
+        }
+
+        /* Developer Section */
+        .developer-section {
+            text-align: center;
+            padding: 60px 0;
+            background: var(--secondary-black);
+            border-top: 1px solid var(--accent-gray);
+        }
+
+        .developer-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .developer-section h3 {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            color: var(--primary-red);
+        }
+
+        .developer-section p {
+            font-size: 1.1rem;
+            color: var(--text-light);
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+
+        .developer-contact {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 25px;
+            flex-wrap: wrap;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 30px;
+            transition: all 0.3s ease;
+        }
+
+        .contact-item:hover {
+            background: rgba(255, 0, 0, 0.1);
+            transform: translateY(-3px);
+        }
+
+        .contact-item i {
+            color: var(--primary-red);
+            font-size: 1.2rem;
+        }
+
+        /* Application Form */
+        .apply-form-container {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(5px);
+        }
+
+        .apply-form {
+            background: linear-gradient(145deg, var(--secondary-black), var(--accent-gray));
+            width: 90%;
+            max-width: 600px;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.7);
+            position: relative;
+            border: 1px solid var(--primary-red);
+        }
+
+        .form-title {
+            text-align: center;
+            margin-bottom: 25px;
+            color: var(--text-white);
+            font-size: 1.8rem;
+            font-weight: 700;
+            text-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
+            position: relative;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--text-white);
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 14px 16px;
+            border-radius: 8px;
+            border: 2px solid #444;
+            background-color: #333;
+            color: var(--text-white);
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus, .form-group select:focus {
+            border-color: var(--primary-red);
+            outline: none;
+            box-shadow: 0 0 10px rgba(255, 0, 0, 0.3);
+        }
+
+        .form-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+            gap: 15px;
+        }
+
+        .form-btn {
+            padding: 14px 28px;
+            border-radius: 30px;
+            border: none;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 16px;
+            flex: 1;
+        }
+
+        .submit-btn {
+            background: linear-gradient(to right, var(--primary-red), var(--secondary-red));
+            color: var(--text-white);
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(255, 0, 0, 0.4);
+        }
+
+        .cancel-btn {
+            background-color: #444;
+            color: var(--text-white);
+        }
+
+        .cancel-btn:hover {
+            background-color: #666;
+            transform: translateY(-3px);
+        }
+
+        .form-step {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .form-step.active {
+            display: block;
+        }
+
+        .success-message {
+            text-align: center;
+            padding: 40px 20px;
+            display: none;
+            animation: fadeIn 0.5s ease;
+            width: 100%;
+        }
+
+        .success-message i {
+            font-size: 5rem;
+            color: #4CAF50;
+            margin-bottom: 25px;
+            animation: pulse 1.5s infinite;
+        }
+
+        .success-message h2 {
+            font-size: 2.2rem;
+            margin-bottom: 20px;
+            color: var(--text-white);
+        }
+
+        .success-message p {
+            font-size: 1.1rem;
+            color: var(--text-light);
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--primary-black);
+            padding: 40px 0 20px;
+            text-align: center;
+            margin-top: 50px;
+            border-top: 1px solid var(--accent-gray);
+        }
+
+        .footer-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .footer-logo {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--text-white);
+            background: linear-gradient(to right, var(--text-white), var(--primary-red));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: pulse 2s infinite;
+        }
+
+        .copyright {
+            color: #777;
+            font-size: 1rem;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 0, 0, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(255, 0, 0, 0); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 0, 0, 0); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .hero h1 {
+                font-size: 3rem;
+            }
+            
+            .section-title {
+                font-size: 2.2rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-container {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .nav-links {
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 15px;
+            }
+            
+            /* Make hero section smaller on mobile */
+            .hero {
+                padding: 120px 0 70px;
+            }
+            
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+            
+            .hero p {
+                font-size: 1rem;
+                padding: 0 15px;
+            }
+            
+            .gang-name {
+                font-size: 1.8rem;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+            }
+            
+            .form-buttons {
+                flex-direction: column;
+            }
+            
+            .floating-buttons {
+                bottom: 20px;
+                right: 20px;
+            }
+            
+            .floating-btn {
+                width: 50px;
+                height: 50px;
+                font-size: 18px;
+            }
+
+            .developer-section h3 {
+                font-size: 1.5rem;
+            }
+
+            .developer-section p {
+                font-size: 1rem;
+                padding: 0 15px;
+            }
+
+            .contact-item {
+                padding: 10px 15px;
+                font-size: 0.9rem;
+            }
+
+            .info-content {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero {
+                padding: 100px 0 60px;
+            }
+            
+            .hero h1 {
+                font-size: 1.8rem;
+            }
+            
+            .section-title {
+                font-size: 1.8rem;
+            }
+            
+            .apply-form {
+                padding: 20px;
+            }
+            
+            .floating-buttons {
+                bottom: 15px;
+                right: 15px;
+            }
+
+            .developer-section {
+                padding: 40px 0;
+            }
+
+            .developer-section h3 {
+                font-size: 1.3rem;
+            }
+
+            .developer-section p {
+                font-size: 0.9rem;
+            }
+
+            .contact-item {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="animated-bg">
+        <div class="bg-circle"></div>
+        <div class="bg-circle"></div>
+        <div class="bg-circle"></div>
+        <div class="bg-circle"></div>
+    </div>
+
+    <header id="header">
+        <div class="container nav-container">
+            <div class="logo">
+                <img src="https://i.ibb.co/fGpxmbMT/glactx-logo.png" alt="GLACT-X Logo">
+                <div class="logo-text">
+                    <div class="gang-name">GLACT-X</div>
+                    <div class="gang-tag">THUNDER CRIMINALS [TDR] x AKATSUKI [ATX]</div>
+                </div>
+            </div>
+            <div class="nav-links">
+                <a href="#rules">Rules</a>
+                <a href="#gang-info">Gang Info</a>
+                <a href="#discord">Discord</a>
+            </div>
+            <button class="apply-btn" id="applyBtn">Gang Apply</button>
+        </div>
+    </header>
+
+    <!-- Floating buttons -->
+    <div class="floating-buttons">
+        <a href="https://discord.gg/5b4w6CXMeB" class="floating-btn discord-btn" target="_blank">
+            <i class="fab fa-discord"></i>
+        </a>
+        <button class="floating-btn apply-float-btn" id="applyFloatBtn">
+            <i class="fas fa-user-plus"></i>
+        </button>
+    </div>
+
+    <section class="hero">
+        <div class="container hero-content">
+            <h1>GLACT-<span>X</span> GANG</h1>
+            <p>San Andreas Most Feared Criminal Organization. Ruling the streets of Los Santos with power and precision.</p>
+        </div>
+    </section>
+
+    <!-- Rules Section -->
+    <section class="rules-section" id="rules">
+        <div class="container rules-container">
+            <h2 class="section-title">RULES & REGULATIONS</h2>
+            
+            <div class="rule-category">
+                <h3>General Rules</h3>
+                <ul class="rule-list">
+                    <li>Disrespecting CO or BOSS results in immediate kick</li>
+                    <li>Toxic behavior with members results in kick</li>
+                    <li>No response = 3 warnings</li>
+                    <li>Must maintain a powerful connection</li>
+                    <li>No message spamming</li>
+                    <li>GBK misuse is prohibited</li>
+                    <li>Radio noise is strictly forbidden</li>
+                </ul>
+            </div>
+            
+            <div class="rule-category">
+                <h3>Operational Guidelines</h3>
+                <ul class="rule-list">
+                    <li>Non-provocation policy towards other gangs and citizens</li>
+                    <li>Rank progression based on performance and city activity</li>
+                    <li>Promotion requests result in demotion</li>
+                    <li>Gang departure requires valid reasoning</li>
+                    <li>Whitelist requirement in PW</li>
+                    <li>Comprehensive knowledge of RP and gang rules required</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gang Info Section - Consolidated -->
+    <section class="gang-info-section" id="gang-info">
+        <div class="container gang-info-container">
+            <h2 class="section-title">GANG INFORMATION</h2>
+            
+            <!-- Leaders Box -->
+            <div class="info-box">
+                <h3 class="info-title">GANG LEADERS</h3>
+                <div class="info-content">
+                    <div class="info-item">
+                        <div class="member-name">Vynz_Abrahamm</div>
+                        <div class="member-role">BOSS</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="member-name">Fredin_Freddy</div>
+                        <div class="member-role">BOSS</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Co-Leaders Box -->
+            <div class="info-box">
+                <h3 class="info-title">GANG CO-LEADERS</h3>
+                <div class="info-content">
+                    <div class="info-item">
+                        <div class="member-name">Lender_Dire</div>
+                        <div class="member-role">CO-LEADER</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="member-name">Eren_Yeager</div>
+                        <div class="member-role">CO-LEADER</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="member-name">Jodx_Vincenzo</div>
+                        <div class="member-role">CO-LEADER</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Members Box -->
+            <div class="info-box">
+                <h3 class="info-title">GANG MEMBERS</h3>
+                <div class="info-content">                	
+                    <!-- Members will be added here dynamically -->
+  <div class="member-name">Vynz_Abraham</div>
+<div class="member-name">Eren_Yeager</div>
+<div class="member-name">Rizu_Cazz</div>
+<div class="member-name">Rj_Zam</div>
+<div class="member-name">Ricardo_Miles</div>
+<div class="member-name">Kakashi_Katake</div>
+<div class="member-name">Jodx_Vincenzo</div>
+<div class="member-name">Zamurai_Zy</div>
+<div class="member-name">Alexander_Bravo</div>
+<div class="member-name">Maya_Kannan</div>
+<div class="member-name">Bruce_Raj</div>
+<div class="member-name">Mr_Trivia</div>
+<div class="member-name">Ferdin_Fredy</div>
+<div class="member-name">Dextra_Vyko</div>
+<div class="member-name">Lender_Dire</div>
+<div class="member-name">Dean_Ambrose</div>
+<div class="member-name">Tdr_Sathan</div>
+<div class="member-name">Razz_Popz</div>
+<div class="member-name">Senzio_Stark</div>
+<div class="member-name">Kevin_Carlo</div>
+<div class="member-name">Kurup_Dq</div>
+<div class="member-name">Babu_Don</div>
+<div class="member-name">Achu_Uchiha</div>
+<div class="member-name">Dingan_Rx</div>                  	
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="discord-section" id="discord">
+        <div class="container">
+            <h2 class="section-title">JOIN OUR DISCORD</h2>
+            <p>Stay connected with the gang, receive updates, and participate in events</p>
+            <a href="https://discord.gg/qz52EVMu8G" class="discord-btn-large" target="_blank">
+                <i class="fab fa-discord"></i> Join GLACT-X Discord
+            </a>
+        </div>
+    </section>
+
+    <!-- Developer Section -->
+    <section class="developer-section">
+        <div class="container developer-content">
+            <h3>Developed by Rizu</h3>
+            <p>For enquiries about website development or customization</p>
+            <div class="developer-contact">
+                <div class="contact-item">
+                    <i class="fab fa-discord"></i>
+                    <span>satoru_797</span>
+                </div>
+                <div class="contact-item">
+                    <i class="fab fa-discord"></i>
+                    <span>Briko Development</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="apply-form-container" id="applyFormContainer">
+        <div class="apply-form">
+            <div class="form-step active" id="step1">
+                <h2 class="form-title">Gang Application - Step 1/3</h2>
+                <div class="form-group">
+                    <label for="igName">IG NAME:</label>
+                    <input type="text" id="igName" placeholder="Enter your in-game name">
+                </div>
+                <div class="form-group">
+                    <label for="age">AGE:</label>
+                    <input type="number" id="age" placeholder="Enter your age" min="16">
+                </div>
+                <div class="form-buttons">
+                    <button class="form-btn cancel-btn" id="cancelBtn">Cancel</button>
+                    <button class="form-btn submit-btn" id="nextBtn1">Next</button>
+                </div>
+            </div>
+            
+            <div class="form-step" id="step2">
+                <h2 class="form-title">Gang Application - Step 2/3</h2>
+                <div class="form-group">
+                    <label for="gangExp">GANG RP EXP:</label>
+                    <select id="gangExp">
+                        <option value="">Select your experience level</option>
+                        <option value="beginner">Beginner (0-3 months)</option>
+                        <option value="intermediate">Intermediate (3-12 months)</option>
+                        <option value="expert">Expert (1+ years)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="device">Mob/Pc:</label>
+                    <select id="device">
+                        <option value="">Select your device</option>
+                        <option value="mobile">Mobile</option>
+                        <option value="pc">PC</option>
+                    </select>
+                </div>
+                <div class="form-buttons">
+                    <button class="form-btn cancel-btn" id="prevBtn1">Previous</button>
+                    <button class="form-btn submit-btn" id="nextBtn2">Next</button>
+                </div>
+            </div>
+            
+            <div class="form-step" id="step3">
+                <h2 class="form-title">Gang Application - Step 3/3</h2>
+                <div class="form-group">
+                    <label for="phone">Ph Number:</label>
+                    <input type="tel" id="phone" placeholder="Enter your 10-digit phone number" pattern="[0-9]{10}">
+                </div>
+                <div class="form-group">
+                    <label for="discordUsername">Discord Username:</label>
+                    <input type="text" id="discordUsername" placeholder="Enter your Discord username">
+                </div>
+                <div class="form-buttons">
+                    <button class="form-btn cancel-btn" id="prevBtn2">Previous</button>
+                    <button class="form-btn submit-btn" id="submitBtn">Submit</button>
+                </div>
+            </div>
+            
+            <div class="success-message" id="successMessage">
+                <i class="fas fa-check-circle"></i>
+                <h2>Application Submitted!</h2>
+                <p>Your application has been submitted to GLACT-X support. Make sure you are in the GLACT-X Discord server for your application to be accepted.</p>
+                <button class="form-btn cancel-btn" id="closeSuccess">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container footer-content">
+            <div class="footer-logo">GLACT-X</div>
+            <div class="copyright">© 2025 GLACT-X Gang. All rights reserved.</div>
+        </div>
+    </footer>
+
+    <script>
+        // Gang members data
+        const members = [
+            "Vynz_Abraham", "Eren_Yeager", "Rizu_Cazz", "Rj_Zam", "Ricardo_Miles",
+            "Kakashi_Katake", "Jodx_Vincenzo", "Zamurai_Zy", "Alexander_Bravo", "Maya_Kannan",
+            "Bruce_Raj", "Mr_Trivia", "Ferdin_Fredy", "Dextra_Vyko", "Lender_Dire",
+            "Dean_Ambrose", "Tdr_Sathan", "Razz_Popz", "Senzio_Stark", "Kevin_Carlo",
+            "Kurup_Dq", "Babu_Don", "Achu_Uchiha", "Dingan_Rx"
+        ];
+
+        // Function to generate member cards
+        function generateMemberCards() {
+            const membersGrid = document.querySelector('.info-content:last-child');
+            
+            members.forEach((member) => {
+                const item = document.createElement('div');
+                item.className = 'info-item';
+                
+                item.innerHTML = `
+                    <div class="member-name">${member}</div>
+                    <div class="member-role">MEMBER</div>
+                `;
+                
+                membersGrid.appendChild(item);
+           // });
+        }
+
+        // Header scroll behavior
+        let lastScrollTop = 0;
+        const header = document.getElementById('header');
+        const headerHeight = header.offsetHeight;
+        
+        function handleHeaderScroll() {
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            
+            if (scrollTop > lastScrollTop && scrollTop > headerHeight) {
+                // Scroll down
+                header.classList.add('hidden');
+            } else {
+                // Scroll up
+                header.classList.remove('hidden');
+            }
+            
+            lastScrollTop = scrollTop;
+        }
+
+        // Application form functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            generateMemberCards();
+            
+            // Add scroll event listener for header
+            window.addEventListener('scroll', handleHeaderScroll);
+            
+            const applyBtn = document.getElementById('applyBtn');
+            const applyFloatBtn = document.getElementById('applyFloatBtn');
+            const cancelBtn = document.getElementById('cancelBtn');
+            const applyFormContainer = document.getElementById('applyFormContainer');
+            const nextBtn1 = document.getElementById('nextBtn1');
+            const nextBtn2 = document.getElementById('nextBtn2');
+            const prevBtn1 = document.getElementById('prevBtn1');
+            const prevBtn2 = document.getElementById('prevBtn2');
+            const submitBtn = document.getElementById('submitBtn');
+            const closeSuccess = document.getElementById('closeSuccess');
+            const step1 = document.getElementById('step1');
+            const step2 = document.getElementById('step2');
+            const step3 = document.getElementById('step3');
+            const successMessage = document.getElementById('successMessage');
+            const phoneInput = document.getElementById('phone');
+            
+            // Open application form from both buttons
+            applyBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                applyFormContainer.style.display = 'flex';
+            });
+            
+            applyFloatBtn.addEventListener('click', function() {
+                applyFormContainer.style.display = 'flex';
+            });
+            
+            // Close application form
+            cancelBtn.addEventListener('click', function() {
+                applyFormContainer.style.display = 'none';
+                resetForm();
+            });
+            
+            // Close success message
+            closeSuccess.addEventListener('click', function() {
+                successMessage.style.display = 'none';
+                applyFormContainer.style.display = 'none';
+                resetForm();
+            });
+            
+            // Form navigation
+            nextBtn1.addEventListener('click', function() {
+                const igName = document.getElementById('igName').value;
+                const age = document.getElementById('age').value;
+                
+                if (igName && age) {
+                    step1.classList.remove('active');
+                    step2.classList.add('active');
+                } else {
+                    alert('Please fill in all fields');
+                }
+            });
+            
+            nextBtn2.addEventListener('click', function() {
+                const gangExp = document.getElementById('gangExp').value;
+                const device = document.getElementById('device').value;
+                
+                if (gangExp && device) {
+                    step2.classList.remove('active');
+                    step3.classList.add('active');
+                } else {
+                    alert('Please fill in all fields');
+                }
+            });
+            
+            prevBtn1.addEventListener('click', function() {
+                step2.classList.remove('active');
+                step1.classList.add('active');
+            });
+            
+            prevBtn2.addEventListener('click', function() {
+                step3.classList.remove('active');
+                step2.classList.add('active');
+            });
+            
+            // Phone number validation
+            phoneInput.addEventListener('input', function() {
+                if (phoneInput.value.length > 10) {
+                    phoneInput.value = phoneInput.value.slice(0, 10);
+                }
+            });
+            
+            // Form submission
+            submitBtn.addEventListener('click', function() {
+                const phone = document.getElementById('phone').value;
+                const discordUsername = document.getElementById('discordUsername').value;
+                
+                if (phone.length !== 10) {
+                    alert('Phone number must be exactly 10 digits');
+                    return;
+                }
+                
+                if (!discordUsername) {
+                    alert('Please enter your Discord username');
+                    return;
+                }
+                
+                // Get all form values
+                const formData = {
+                    igName: document.getElementById('igName').value,
+                    age: document.getElementById('age').value,
+                    gangExp: document.getElementById('gangExp').value,
+                    device: document.getElementById('device').value,
+                    phone: phone,
+                    discordUsername: discordUsername
+                };
+                
+                // Send to Discord webhook
+                sendToWebhook(formData);
+                
+                // Show success message
+                step3.classList.remove('active');
+                successMessage.style.display = 'block';
+            });
+            
+            // Function to send data to Discord webhook
+            function sendToWebhook(formData) {
+                // Replace with your actual webhook URL
+                const webhookURL = 'https://discord.com/api/webhooks/1408160487601868861/tpTgBbcVWRwakdKZvLVasrt0scR4TBsZmv1jUpw4WMx2lph0bHLVfeeZg19mGwIP5wXE';
+                
+                // Create the embed message
+                const embed = {
+                    title: "New GLACT-X Gang Application",
+                    color: 0xff0000, // Red color
+                    fields: [
+                        {
+                            name: "IG NAME",
+                            value: formData.igName,
+                            inline: true
+                        },
+                        {
+                            name: "AGE",
+                            value: formData.age,
+                            inline: true
+                        },
+                        {
+                            name: "GANG RP EXP",
+                            value: formData.gangExp,
+                            inline: true
+                        },
+                        {
+                            name: "Mob/PC",
+                            value: formData.device,
+                            inline: true
+                        },
+                        {
+                            name: "Ph Number",
+                            value: formData.phone,
+                            inline: true
+                        },
+                        {
+                            name: "Discord Username",
+                            value: formData.discordUsername,
+                            inline: true
+                        }
+                    ],
+                    timestamp: new Date().toISOString()
+                };
+                
+                // Send the request to Discord webhook
+                fetch(webhookURL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ embeds: [embed] })
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        console.error('Error sending to webhook:', response.statusText);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+            }
+            
+            // Reset form to initial state
+            function resetForm() {
+                step1.classList.add('active');
+                step2.classList.remove('active');
+                step3.classList.remove('active');
+                successMessage.style.display = 'none';
+                
+                document.getElementById('igName').value = '';
+                document.getElementById('age').value = '';
+                document.getElementById('gangExp').value = '';
+                document.getElementById('device').value = '';
+                document.getElementById('phone').value = '';
+                document.getElementById('discordUsername').value = '';
+            }
+        });
+    </script>
+</body>
+</html>
